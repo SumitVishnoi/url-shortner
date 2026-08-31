@@ -33,7 +33,6 @@ export const generateShortUrl = async (req, res) => {
 export const getURL = async (req, res) => {
   try {
     const { shortId } = req.params;
-    console.log(shortId);
     const entry = await URL.findOneAndUpdate(
       { shortId },
       {
@@ -57,3 +56,21 @@ export const getURL = async (req, res) => {
      });
   }
 };
+
+export const getAnalytics = async (req, res) => {
+  try {
+    const {shortId} = req.params
+
+    const result = await URL.findOne({shortId})
+
+    return res.status(200).json({
+      totalClicks: result.visitHistory.length,
+      analytics: result.visitHistory
+    })
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "get analytics error"
+    })
+  }
+}
