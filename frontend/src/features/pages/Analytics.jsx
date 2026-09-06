@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { getAnalytics } from "../services/url.api";
 import AnalyticsCard from "../components/AnalyticsCard";
 import Loading from "../components/Loading";
+import { useURL } from "../hook/useURL";
 
 const Analytics = () => {
   const [shortId, setShortId] = useState("");
   const [data, setData] = useState(null);
-
+  const {handleGetAnalytics} = useURL()
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -24,7 +24,7 @@ const Analytics = () => {
     try {
       setLoading(true);
 
-      const result = await getAnalytics(shortId.trim());
+      const result = await handleGetAnalytics(shortId.trim());
 
       setData(result);
     } catch (error) {

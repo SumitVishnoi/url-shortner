@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { generateShortUrl } from "../services/url.api";
 import ShortUrlResult from "./ShortUrlResult";
+import { useURL } from "../hook/useURL";
 
 const ShortUrlForm = () => {
   const [url, setUrl] = useState("");
   const [result, setResult] = useState(null);
-
+  const {handleGenerateShortUrl} = useURL()
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -30,8 +30,8 @@ const ShortUrlForm = () => {
     try {
       setLoading(true);
 
-      const data = await generateShortUrl(url.trim());
-
+      const data = await handleGenerateShortUrl(url.trim());
+      console.log(data)
       setResult(data);
       setUrl("");
     } catch (error) {
