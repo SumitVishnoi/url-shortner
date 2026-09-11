@@ -5,9 +5,10 @@ import { useURL } from "../hook/useURL";
 const ShortUrlForm = () => {
   const [url, setUrl] = useState("");
   const [result, setResult] = useState(null);
-  const {handleGenerateShortUrl} = useURL()
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
+  const { handleGenerateShortUrl } = useURL();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,13 +16,15 @@ const ShortUrlForm = () => {
     setError("");
     setResult(null);
 
-    if (!url.trim()) {
+    const trimmedUrl = url.trim();
+
+    if (!trimmedUrl) {
       setError("Please enter a URL.");
       return;
     }
 
     try {
-      new URL(url);
+      new URL(trimmedUrl);
     } catch {
       setError("Please enter a valid URL.");
       return;
@@ -30,13 +33,20 @@ const ShortUrlForm = () => {
     try {
       setLoading(true);
 
-      const data = await handleGenerateShortUrl(url.trim());
-      console.log(data)
+      const data = await handleGenerateShortUrl(trimmedUrl);
+
+      console.log("DATA FROM HOOK:", data);
+
+      // Store the response
       setResult(data);
+
       setUrl("");
     } catch (error) {
+      console.error(error);
+
       setError(
         error?.response?.data?.message ||
+          error?.message ||
           "Something went wrong. Please try again."
       );
     } finally {
@@ -73,7 +83,9 @@ const ShortUrlForm = () => {
         </div>
       )}
 
-      {result && <ShortUrlResult result={result} />}
+      {result && (
+        <ShortUrlResult result={result} />
+      )}
     </div>
   );
 };

@@ -1,23 +1,34 @@
-import { generateShortUrl, getAnalytics, getURL } from "../services/url.api";
+import {
+  generateShortUrl,
+  getAnalytics,
+  getURL,
+} from "../services/url.api";
 
 export const useURL = () => {
   const handleGenerateShortUrl = async (url) => {
     const data = await generateShortUrl(url);
-    console.log(data);
+
+    console.log("GENERATE RESPONSE:", data);
+
     return data;
   };
 
   const handleGetURL = async (shortId) => {
     const data = await getURL(shortId);
-    console.log(data.entry);
+
+    console.log("GET URL RESPONSE:", data);
+
     return data.entry;
   };
 
   const handleGetAnalytics = async (shortId) => {
     const data = await getAnalytics(shortId);
-    console.log(data);
+
+    console.log("ANALYTICS RESPONSE:", data);
+
     return data;
   };
+
   return {
     handleGenerateShortUrl,
     handleGetURL,
